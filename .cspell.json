@@ -1,0 +1,25 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignorePaths": [
+    "vendor/**",
+    "tmp/**",
+    "log/**",
+    "db/schema.rb",
+    "bin/**"
+  ],
+  "words": [
+    "validatable",
+    "jbuilder",
+    "Kredis",
+    "kredis",
+    "zoneinfo",
+    "bootsnap",
+    "sassc",
+    "devise",
+    "jwt",
+    "sprockets",
+    "zeitwerk",
+    "puma"
+  ]
+}

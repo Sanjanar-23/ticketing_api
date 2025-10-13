@@ -1,6 +1,16 @@
-class CompaniesController < ApplicationController
+class CompaniesController < WebControllerBase
   def index
-    @companies = Company.all
+    @q = params[:q].to_s.strip
+    scope = Company.all
+    if @q.present?
+      q = "%#{@q}%"
+      scope = scope.left_joins(:contacts)
+                   .where(
+                     "companies.name ILIKE :q OR contacts.customer_name ILIKE :q OR contacts.email ILIKE :q OR contacts.phone ILIKE :q",
+                     q: q
+                   ).distinct
+    end
+    @companies = scope.order(created_at: :desc)
   end
 
   def show

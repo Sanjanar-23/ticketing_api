@@ -1,4 +1,13 @@
-<h1><%= @contact.customer_name %></h1>
-<p>Email: <%= @contact.email %></p>
-<p>Company: <%= link_to @contact.company_name, @contact.company %></p>
-<%= link_to 'Edit', edit_contact_path(@contact) %> | <%= link_to 'Back', contacts_path %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 m-0"><%= @contact.customer_name %></h1>
+  <div>
+    <%= link_to 'Edit', edit_contact_path(@contact), class: 'btn btn-outline-secondary' %>
+    <%= link_to 'Back', contacts_path, class: 'btn btn-link' %>
+  </div>
+</div>
+
+<div class="card p-3">
+  <p><strong>Email:</strong> <%= @contact.email %></p>
+  <p><strong>Company:</strong> <%= link_to @contact.company_name, @contact.company %></p>
+  <p><strong>Phone:</strong> <%= @contact.phone %></p>
+</div>

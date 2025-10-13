@@ -1,9 +1,29 @@
-<h1>Contacts</h1>
-<%= link_to 'New Contact', new_contact_path %>
-<ul>
-  <% @contacts.each do |c| %>
-    <li>
-      <%= link_to c.customer_name, c %> - <%= c.company_name %>
-    </li>
-  <% end %>
-</ul>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 m-0">Contacts</h1>
+  <%= link_to 'New Contact', new_contact_path, class: 'btn btn-primary' %>
+</div>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Company</th>
+      <th>Phone</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @contacts.each do |c| %>
+      <tr>
+        <td><%= link_to c.customer_name, c %></td>
+        <td><%= c.email %></td>
+        <td><%= c.company_name %></td>
+        <td><%= c.phone %></td>
+        <td class="text-end">
+          <%= link_to 'Edit', edit_contact_path(c), class: 'btn btn-sm btn-outline-secondary' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

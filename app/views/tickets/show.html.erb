@@ -1,6 +1,17 @@
-<h1><%= @ticket.subject %></h1>
-<p>Status: <%= @ticket.status %></p>
-<p>Company: <%= @ticket.company_name %> (<%= @ticket.company_code %>)</p>
-<p>Customer: <%= @ticket.customer_name %> - <%= @ticket.email %></p>
-<p>Description: <%= @ticket.description %></p>
-<%= link_to 'Edit', edit_ticket_path(@ticket) %> | <%= link_to 'Back', tickets_path %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 m-0"><%= @ticket.subject %></h1>
+  <div>
+    <%= link_to 'Edit', edit_ticket_path(@ticket), class: 'btn btn-outline-secondary' %>
+    <%= link_to 'Back', tickets_path, class: 'btn btn-link' %>
+  </div>
+</div>
+
+<div class="card p-3">
+  <p><strong>Status:</strong> <span class="badge <%= @ticket.status == 'resolved' || @ticket.status == 'closed' ? 'text-bg-success' : 'text-bg-warning' %>"><%= @ticket.status %></span></p>
+  <p><strong>Company:</strong> <%= @ticket.company_name %> (<%= @ticket.company_code %>)</p>
+  <p><strong>Customer:</strong> <%= @ticket.customer_name %> - <%= @ticket.email %></p>
+  <p><strong>Description:</strong><br><%= @ticket.description %></p>
+  <% if @ticket.note.present? %>
+    <p><strong>Note:</strong><br><%= @ticket.note %></p>
+  <% end %>
+</div>

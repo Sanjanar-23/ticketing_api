@@ -1,4 +1,4 @@
-class ContactsController < ApplicationController
+class ContactsController < WebControllerBase
   def index
     @contacts = Contact.includes(:company).all
   end

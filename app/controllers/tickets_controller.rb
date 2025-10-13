@@ -1,6 +1,16 @@
-class TicketsController < ApplicationController
+class TicketsController < WebControllerBase
   def index
-    @tickets = Ticket.includes(contact: :company).all
+    @q = params[:q].to_s.strip
+    scope = Ticket.includes(contact: :company).all
+    if @q.present?
+      like = "%#{@q}%"
+      scope = scope.where(
+        Ticket.arel_table[:company_name].matches(like)
+        .or(Ticket.arel_table[:issue].matches(like))
+        .or(Ticket.arel_table[:subject].matches(like))
+      )
+    end
+    @tickets = scope.order(created_at: :desc)
   end
 
   def show

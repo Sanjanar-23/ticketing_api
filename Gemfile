@@ -48,3 +48,6 @@ end
 
 gem "devise", "~> 4.9"
 gem "devise-jwt", "~> 0.12.1"
+
+gem "sprockets-rails", "~> 3.5"
+gem "sassc-rails", "~> 2.1"

@@ -1,7 +1,17 @@
-<h1><%= @company.name %></h1>
-<p>Code: <%= @company.company_code %></p>
-<p>Email: <%= @company.email %></p>
-<p>Website: <%= @company.website %></p>
-<p>Territory: <%= @company.territory %></p>
-<p>Address: <%= @company.address %></p>
-<%= link_to 'Edit', edit_company_path(@company) %> | <%= link_to 'Back', companies_path %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 m-0"><%= @company.name %></h1>
+  <div>
+    <%= link_to 'Edit', edit_company_path(@company), class: 'btn btn-outline-secondary' %>
+    <%= link_to 'Back', companies_path, class: 'btn btn-link' %>
+  </div>
+</div>
+
+<div class="card p-3">
+  <div class="row g-3">
+    <div class="col-md-6"><strong>Code:</strong> <span class="badge text-bg-secondary"><%= @company.company_code %></span></div>
+    <div class="col-md-6"><strong>Email:</strong> <%= @company.email %></div>
+    <div class="col-md-6"><strong>Website:</strong> <%= @company.website %></div>
+    <div class="col-md-6"><strong>Territory:</strong> <%= @company.territory %></div>
+    <div class="col-12"><strong>Address:</strong> <%= @company.address %></div>
+  </div>
+</div>
