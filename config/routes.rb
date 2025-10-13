@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  # Silence favicon errors in dev
+  get '/favicon.ico', to: proc { [204, {}, []] }
+
   root to: 'companies#index'
 
   resources :companies
