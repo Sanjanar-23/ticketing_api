@@ -1,0 +1,6 @@
+<h1><%= @ticket.subject %></h1>
+<p>Status: <%= @ticket.status %></p>
+<p>Company: <%= @ticket.company_name %> (<%= @ticket.company_code %>)</p>
+<p>Customer: <%= @ticket.customer_name %> - <%= @ticket.email %></p>
+<p>Description: <%= @ticket.description %></p>
+<%= link_to 'Edit', edit_ticket_path(@ticket) %> | <%= link_to 'Back', tickets_path %>

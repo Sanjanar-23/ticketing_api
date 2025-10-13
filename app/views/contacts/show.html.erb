@@ -1,0 +1,4 @@
+<h1><%= @contact.customer_name %></h1>
+<p>Email: <%= @contact.email %></p>
+<p>Company: <%= link_to @contact.company_name, @contact.company %></p>
+<%= link_to 'Edit', edit_contact_path(@contact) %> | <%= link_to 'Back', contacts_path %>

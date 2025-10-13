@@ -1,0 +1,35 @@
+<%= form_with model: @ticket do |f| %>
+  <div>
+    <%= f.label :contact_id %>
+    <%= f.number_field :contact_id %>
+  </div>
+  <div>
+    <%= f.label :user_id %>
+    <%= f.number_field :user_id %>
+  </div>
+  <div>
+    <%= f.label :subject %>
+    <%= f.text_field :subject %>
+  </div>
+  <div>
+    <%= f.label :issue %>
+    <%= f.text_field :issue %>
+  </div>
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+  <div>
+    <%= f.label :note %>
+    <%= f.text_area :note %>
+  </div>
+  <div>
+    <%= f.label :assigned_to %>
+    <%= f.text_field :assigned_to %>
+  </div>
+  <div>
+    <%= f.label :status %>
+    <%= f.select :status, Ticket::STATUSES %>
+  </div>
+  <%= f.submit %>
+<% end %>

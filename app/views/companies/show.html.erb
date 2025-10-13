@@ -1,0 +1,7 @@
+<h1><%= @company.name %></h1>
+<p>Code: <%= @company.company_code %></p>
+<p>Email: <%= @company.email %></p>
+<p>Website: <%= @company.website %></p>
+<p>Territory: <%= @company.territory %></p>
+<p>Address: <%= @company.address %></p>
+<%= link_to 'Edit', edit_company_path(@company) %> | <%= link_to 'Back', companies_path %>

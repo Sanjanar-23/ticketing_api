@@ -1,0 +1,23 @@
+<%= form_with model: @contact do |f| %>
+  <div>
+    <%= f.label :company_id %>
+    <%= f.number_field :company_id %>
+  </div>
+  <div>
+    <%= f.label :user_id %>
+    <%= f.number_field :user_id %>
+  </div>
+  <div>
+    <%= f.label :customer_name %>
+    <%= f.text_field :customer_name %>
+  </div>
+  <div>
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </div>
+  <div>
+    <%= f.label :phone %>
+    <%= f.text_field :phone %>
+  </div>
+  <%= f.submit %>
+<% end %>

@@ -1,0 +1,27 @@
+<%= form_with model: @company do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </div>
+  <div>
+    <%= f.label :website %>
+    <%= f.text_field :website %>
+  </div>
+  <div>
+    <%= f.label :territory %>
+    <%= f.text_field :territory %>
+  </div>
+  <div>
+    <%= f.label :address %>
+    <%= f.text_area :address %>
+  </div>
+  <div>
+    <%= f.label :user_id %>
+    <%= f.number_field :user_id %>
+  </div>
+  <%= f.submit %>
+<% end %>
