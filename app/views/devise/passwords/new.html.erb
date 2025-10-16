@@ -1,16 +1,42 @@
-<h2>Forgot your password?</h2>
+<div class="auth-card">
+  <h1 class="auth-title">Forgot Password?</h1>
+  <p class="auth-subtitle">Enter your email address and we'll send you a link to reset your password</p>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <% if alert %>
+    <div class="auth-error">
+      <i class="fas fa-exclamation-circle me-2"></i>
+      <%= alert %>
+    </div>
+  <% end %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <% if notice %>
+    <div class="auth-notice">
+      <i class="fas fa-check-circle me-2"></i>
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "auth-form" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="auth-form-group">
+      <%= f.label :email, class: "auth-label" do %>
+        <i class="fas fa-envelope me-2"></i>Email Address
+      <% end %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "auth-input", placeholder: "Enter your email address" %>
+    </div>
+
+    <div class="auth-form-group">
+      <%= f.submit "Send Reset Instructions", class: "auth-button" %>
+    </div>
+  <% end %>
+
+  <div class="auth-divider">
+    <span>or</span>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
+  <div class="auth-link">
+    Remember your password?
+    <%= link_to "Sign In", new_session_path(resource_name) %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

@@ -10,6 +10,7 @@
       <th>Email</th>
       <th>Company</th>
       <th>Phone</th>
+      <th>Created By</th>
       <th></th>
     </tr>
   </thead>
@@ -20,6 +21,7 @@
         <td><%= c.email %></td>
         <td><%= c.company_name %></td>
         <td><%= c.phone %></td>
+        <td><%= c.user&.name || 'Unknown' %></td>
         <td class="text-end">
           <%= link_to 'Edit', edit_contact_path(c), class: 'btn btn-sm btn-outline-secondary' %>
         </td>

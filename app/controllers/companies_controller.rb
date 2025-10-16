@@ -10,19 +10,21 @@ class CompaniesController < WebControllerBase
                      q: q
                    ).distinct
     end
-    @companies = scope.order(created_at: :desc)
+    @companies = scope.includes(:user).order(created_at: :desc)
   end
 
   def show
-    @company = Company.find(params[:id])
+    @company = Company.includes(contacts: :tickets).find(params[:id])
   end
 
   def new
     @company = Company.new
+    @company.user_id = current_user.id if user_signed_in?
   end
 
   def create
     @company = Company.new(company_params)
+    @company.user_id = current_user.id if user_signed_in?
     if @company.save
       redirect_to @company
     else
@@ -31,7 +33,7 @@ class CompaniesController < WebControllerBase
   end
 
   def edit
-    @company = Company.find(params[:id])
+    @company = Company.includes(:user).find(params[:id])
   end
 
   def update
@@ -51,6 +53,6 @@ class CompaniesController < WebControllerBase
   private
 
   def company_params
-    params.require(:company).permit(:name, :email, :website, :territory, :address, :user_id)
+    params.require(:company).permit(:name, :email, :website, :territory, :address, :street, :state, :country, :city, :zip_code)
   end
 end

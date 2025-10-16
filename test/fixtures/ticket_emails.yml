@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ticket: one
+  from: MyString
+  to: MyText
+  cc: MyText
+  subject: MyString
+  body: MyText
+  sent_at: 2025-10-16 11:15:55
+  tags: MyString
+
+two:
+  ticket: two
+  from: MyString
+  to: MyText
+  cc: MyText
+  subject: MyString
+  body: MyText
+  sent_at: 2025-10-16 11:15:55
+  tags: MyString

@@ -1,17 +1,267 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h3 m-0"><%= @company.name %></h1>
+<% company_tickets = @company.contacts.joins(:tickets).includes(:tickets).flat_map(&:tickets) %>
+
+<!-- Top Action Buttons -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 m-0 text-dark">Company Details</h1>
   <div>
-    <%= link_to 'Edit', edit_company_path(@company), class: 'btn btn-outline-secondary' %>
+    <%= link_to 'Create Contact', new_contact_path(company_id: @company.id), class: 'btn btn-success me-2' %>
+    <%= link_to 'Create Ticket', new_ticket_path, class: 'btn btn-warning me-2' %>
+    <%= link_to 'Edit', edit_company_path(@company), class: 'btn btn-outline-secondary me-2' %>
     <%= link_to 'Back', companies_path, class: 'btn btn-link' %>
   </div>
 </div>
 
-<div class="card p-3">
-  <div class="row g-3">
-    <div class="col-md-6"><strong>Code:</strong> <span class="badge text-bg-secondary"><%= @company.company_code %></span></div>
-    <div class="col-md-6"><strong>Email:</strong> <%= @company.email %></div>
-    <div class="col-md-6"><strong>Website:</strong> <%= @company.website %></div>
-    <div class="col-md-6"><strong>Territory:</strong> <%= @company.territory %></div>
-    <div class="col-12"><strong>Address:</strong> <%= @company.address %></div>
+<!-- Header Section -->
+<div class="bg-white border rounded p-4 mb-4">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-2">
+        <strong>Company Code:</strong> <span class="badge text-bg-secondary"><%= @company.company_code %></span>
+      </div>
+      <div class="mb-2">
+        <strong>Email:</strong>
+        <% if @company.email.present? %>
+          <a href="mailto:<%= @company.email %>" class="text-decoration-none"><%= @company.email %></a>
+        <% else %>
+          <span class="text-muted">—</span>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-2">
+        <strong>Website:</strong>
+        <% if @company.website.present? %>
+          <a href="<%= @company.website %>" target="_blank" class="text-decoration-none"><%= @company.website %></a>
+        <% else %>
+          <span class="text-muted">—</span>
+        <% end %>
+      </div>
+      <div class="mb-2">
+        <strong>Territory:</strong>
+        <% if @company.territory.present? %>
+          <%= @company.territory %>
+        <% else %>
+          <span class="text-muted">—</span>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
+
+<div class="row">
+  <!-- Company Details -->
+  <div class="col-md-8">
+    <!-- Company Information Section -->
+    <div class="bg-white border rounded p-4 mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3" style="cursor: pointer;" onclick="toggleCompanyDetails()">
+        <h5 class="mb-0 text-dark">Company Details</h5>
+        <i class="fas fa-chevron-down text-muted" id="companyDetailsChevron"></i>
+      </div>
+
+      <div id="companyDetailsContent">
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <strong>Company Name:</strong>
+            <div class="text-muted"><%= @company.name %></div>
+          </div>
+          <div class="mb-3">
+            <strong>Company Code:</strong>
+            <div><span class="badge text-bg-secondary"><%= @company.company_code %></span></div>
+          </div>
+          <div class="mb-3">
+            <strong>Email:</strong>
+            <div>
+              <% if @company.email.present? %>
+                <a href="mailto:<%= @company.email %>" class="text-decoration-none"><%= @company.email %></a>
+              <% else %>
+                <span class="text-muted">—</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <strong>Website:</strong>
+            <div>
+              <% if @company.website.present? %>
+                <a href="<%= @company.website %>" target="_blank" class="text-decoration-none"><%= @company.website %></a>
+              <% else %>
+                <span class="text-muted">—</span>
+              <% end %>
+            </div>
+          </div>
+          <div class="mb-3">
+            <strong>Territory:</strong>
+            <div>
+              <% if @company.territory.present? %>
+                <%= @company.territory %>
+              <% else %>
+                <span class="text-muted">—</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Section -->
+      <div class="border-top pt-3 mt-3">
+        <strong>Address:</strong>
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <div class="mb-2">
+              <strong>Street:</strong>
+              <div class="text-muted">
+                <% if @company.street.present? %>
+                  <%= @company.street %>
+                <% else %>
+                  —
+                <% end %>
+              </div>
+            </div>
+            <div class="mb-2">
+              <strong>State:</strong>
+              <div class="text-muted">
+                <% if @company.state.present? %>
+                  <%= @company.state %>
+                <% else %>
+                  —
+                <% end %>
+              </div>
+            </div>
+            <div class="mb-2">
+              <strong>Country:</strong>
+              <div class="text-muted">
+                <% if @company.country.present? %>
+                  <%= @company.country %>
+                <% else %>
+                  —
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-2">
+              <strong>City:</strong>
+              <div class="text-muted">
+                <% if @company.city.present? %>
+                  <%= @company.city %>
+                <% else %>
+                  —
+                <% end %>
+              </div>
+            </div>
+            <div class="mb-2">
+              <strong>Zip Code:</strong>
+              <div class="text-muted">
+                <% if @company.zip_code.present? %>
+                  <%= @company.zip_code %>
+                <% else %>
+                  —
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side Column - Contacts and Tickets -->
+  <div class="col-md-4">
+    <!-- Contacts List -->
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Contacts</h5>
+        <span class="badge bg-primary"><%= @company.contacts.count %></span>
+      </div>
+      <div class="card-body p-0">
+        <% if @company.contacts.any? %>
+          <div class="list-group list-group-flush">
+            <% @company.contacts.each do |contact| %>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1"><%= contact.customer_name %></h6>
+                  <small><%= link_to 'View', contact_path(contact), class: 'text-decoration-none' %></small>
+                </div>
+                <p class="mb-1 text-muted"><%= contact.email %></p>
+                <% if contact.phone.present? %>
+                  <small class="text-muted"><%= contact.phone %></small>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="p-3 text-center text-muted">
+            <p class="mb-2">No contacts yet</p>
+            <%= link_to 'Create First Contact', new_contact_path(company_id: @company.id), class: 'btn btn-sm btn-outline-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Tickets List -->
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Tickets</h5>
+        <span class="badge bg-warning"><%= company_tickets.count %></span>
+      </div>
+      <div class="card-body p-0">
+        <% if company_tickets.any? %>
+          <div class="list-group list-group-flush">
+            <% company_tickets.each do |ticket| %>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">
+                    <%= link_to ticket.issue, ticket_path(ticket), class: 'text-decoration-none' %>
+                  </h6>
+                  <small>
+                    <span class="badge <%= case ticket.status
+                                          when 'resolved', 'closed' then 'text-bg-success'
+                                          when 'new' then 'text-bg-info'
+                                          when 'open' then 'text-bg-warning'
+                                          when 'pending' then 'text-bg-secondary'
+                                          else 'text-bg-secondary'
+                                          end %>">
+                      <%= ticket.status %>
+                    </span>
+                  </small>
+                </div>
+                <p class="mb-1 text-muted"><%= ticket.customer_name %></p>
+                <% if ticket.email.present? %>
+                  <small class="text-muted"><%= ticket.email %></small>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="p-3 text-center text-muted">
+            <p class="mb-2">No tickets yet</p>
+            <%= link_to 'Create First Ticket', new_ticket_path, class: 'btn btn-sm btn-outline-warning' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleCompanyDetails() {
+  const content = document.getElementById('companyDetailsContent');
+  const chevron = document.getElementById('companyDetailsChevron');
+
+  if (content.style.display === 'none') {
+    // Show content
+    content.style.display = 'block';
+    chevron.classList.remove('fa-chevron-right');
+    chevron.classList.add('fa-chevron-down');
+  } else {
+    // Hide content
+    content.style.display = 'none';
+    chevron.classList.remove('fa-chevron-down');
+    chevron.classList.add('fa-chevron-right');
+  }
+}
+</script>

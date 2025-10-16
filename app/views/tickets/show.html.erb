@@ -1,17 +1,114 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h1 class="h3 m-0"><%= @ticket.subject %></h1>
   <div>
-    <%= link_to 'Edit', edit_ticket_path(@ticket), class: 'btn btn-outline-secondary' %>
+    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#sendMailModal">
+      <i class="fas fa-envelope"></i> Send Mail
+    </button>
+    <%= link_to 'Edit', edit_ticket_path(@ticket), class: 'btn btn-outline-secondary me-2' %>
     <%= link_to 'Back', tickets_path, class: 'btn btn-link' %>
   </div>
 </div>
 
-<div class="card p-3">
-  <p><strong>Status:</strong> <span class="badge <%= @ticket.status == 'resolved' || @ticket.status == 'closed' ? 'text-bg-success' : 'text-bg-warning' %>"><%= @ticket.status %></span></p>
-  <p><strong>Company:</strong> <%= @ticket.company_name %> (<%= @ticket.company_code %>)</p>
-  <p><strong>Customer:</strong> <%= @ticket.customer_name %> - <%= @ticket.email %></p>
-  <p><strong>Description:</strong><br><%= @ticket.description %></p>
-  <% if @ticket.note.present? %>
-    <p><strong>Note:</strong><br><%= @ticket.note %></p>
-  <% end %>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card p-3 mb-4">
+      <h5 class="card-title">Ticket Details</h5>
+      <p><strong>Status:</strong> <span class="badge <%= @ticket.status == 'resolved' || @ticket.status == 'closed' ? 'text-bg-success' : 'text-bg-warning' %>"><%= @ticket.status %></span></p>
+      <p><strong>Company:</strong> <%= @ticket.company_name %> (<%= @ticket.company_code %>)</p>
+      <p><strong>Customer:</strong> <%= @ticket.customer_name %> - <%= @ticket.email %></p>
+      <p><strong>Description:</strong><br><%= @ticket.description %></p>
+      <% if @ticket.note.present? %>
+        <p><strong>Note:</strong><br><%= @ticket.note %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">📧 Mail History</h5>
+        <span class="badge bg-primary"><%= @ticket.ticket_emails.count %></span>
+      </div>
+      <div class="card-body p-0">
+        <% if @ticket.ticket_emails.any? %>
+          <div class="list-group list-group-flush">
+            <% @ticket.ticket_emails.recent.each do |email| %>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1"><%= email.subject %></h6>
+                  <small class="text-muted"><%= email.sent_at.strftime("%d %b %Y") %></small>
+                </div>
+                <p class="mb-1 text-muted">To: <%= email.to %></p>
+                <% if email.tags.present? %>
+                  <small>
+                    <% email.tag_list.each do |tag| %>
+                      <span class="badge bg-secondary me-1"><%= tag %></span>
+                    <% end %>
+                  </small>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="p-3 text-center text-muted">
+            <p class="mb-2">No emails sent yet</p>
+            <small>Click "Send Mail" to start communication</small>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Send Mail Modal -->
+<div class="modal fade" id="sendMailModal" tabindex="-1" aria-labelledby="sendMailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sendMailModalLabel">✉️ Send Email</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= form_with model: [@ticket, @ticket.ticket_emails.build], url: ticket_ticket_emails_path(@ticket), local: true, class: 'needs-validation', novalidate: true do |f| %>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">From:</label>
+              <input type="text" class="form-control" value="<%= current_user.email %>" readonly>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :to, class: 'form-label' %>
+              <%= f.text_field :to, class: 'form-control', value: @ticket.email, required: true %>
+            </div>
+            <div class="col-12">
+              <%= f.label :cc, class: 'form-label' %>
+              <%= f.text_field :cc, class: 'form-control', placeholder: 'Optional CC recipients' %>
+            </div>
+            <div class="col-12">
+              <%= f.label :subject, class: 'form-label' %>
+              <%= f.text_field :subject, class: 'form-control', value: "Re: Ticket ##{@ticket.id} - #{@ticket.subject}", required: true %>
+            </div>
+            <div class="col-12">
+              <%= f.label :tags, class: 'form-label' %>
+              <%= f.select :tags, options_for_select([
+                ['Follow-up', 'Follow-up'],
+                ['Resolution', 'Resolution'],
+                ['Escalation', 'Escalation'],
+                ['Update', 'Update'],
+                ['Closure', 'Closure']
+              ]), { prompt: 'Select a tag (optional)' }, { class: 'form-select' } %>
+            </div>
+            <div class="col-12">
+              <%= f.label :body, class: 'form-label' %>
+              <%= f.text_area :body, class: 'form-control', rows: 8, required: true,
+                  value: "Hi #{@ticket.customer_name},\n\nRegarding your ticket ##{@ticket.id} - \"#{@ticket.subject}\",\n\n\n\nBest regards,\n#{current_user.name}" %>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <%= f.submit 'Send Email', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

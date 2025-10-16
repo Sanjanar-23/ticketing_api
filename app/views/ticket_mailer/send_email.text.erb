@@ -1,0 +1,15 @@
+Ticket Update
+
+Ticket #<%= @ticket.id %>
+Subject: <%= @ticket.subject %>
+Status: <%= @ticket.status.titleize %>
+Priority: <%= @ticket.priority.titleize %>
+
+<%= @ticket_email.body %>
+
+Best regards,
+<%= @user.name %>
+<%= @user.email %>
+
+---
+This email was sent regarding ticket #<%= @ticket.id %> - "<%= @ticket.subject %>"

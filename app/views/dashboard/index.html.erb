@@ -1,0 +1,232 @@
+<div class="row mb-4">
+  <div class="col-12">
+    <h1 class="h2 mb-0">Dashboard</h1>
+    <p class="text-muted">Overview of your ticketing system</p>
+  </div>
+</div>
+
+<!-- Dashboard Widgets -->
+<div class="row g-4">
+  <!-- Ticket Status Widget -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Ticket Status</h5>
+        <span class="badge bg-primary">Total <%= @total_tickets %></span>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <div class="text-center">
+              <div class="h3 text-primary mb-1"><%= @ticket_statuses['new'] || 0 %></div>
+              <div class="text-muted small">New</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-center">
+              <div class="h3 text-info mb-1"><%= @ticket_statuses['open'] || 0 %></div>
+              <div class="text-muted small">Open</div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-6">
+            <div class="text-center">
+              <div class="h3 text-warning mb-1"><%= @ticket_statuses['pending'] || 0 %></div>
+              <div class="text-muted small">Pending</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-center">
+              <div class="h3 text-success mb-1"><%= @ticket_statuses['resolved'] || 0 %></div>
+              <div class="text-muted small">Resolved</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tickets by Priority Widget -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card h-100">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Tickets by Priority</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small">High</span>
+            <span class="badge bg-danger"><%= @tickets_by_priority['high'] || 0 %></span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-danger" style="width: <%= (@tickets_by_priority['high'] || 0) * 10 %>%"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small">Normal</span>
+            <span class="badge bg-warning"><%= @tickets_by_priority['normal'] || 0 %></span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-warning" style="width: <%= (@tickets_by_priority['normal'] || 0) * 5 %>%"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small">Low</span>
+            <span class="badge bg-secondary"><%= @tickets_by_priority['low'] || 0 %></span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-secondary" style="width: <%= (@tickets_by_priority['low'] || 0) * 10 %>%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Average Response Time Widget -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card h-100">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Average Response Time</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small">First Response</span>
+            <span class="badge bg-info"><%= @avg_response_time[:first_response] %>h</span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-info" style="width: <%= (@avg_response_time[:first_response] / 10 * 100).round %>%"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small">Resolution</span>
+            <span class="badge bg-success"><%= @avg_response_time[:resolution] %>h</span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-success" style="width: <%= (@avg_response_time[:resolution] / 10 * 100).round %>%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Overdue Tickets Widget -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Overdue Tickets (<%= @overdue_tickets.count %>)</h5>
+        <div class="btn-group" role="group">
+          <%= link_to "15 Days", root_path(overdue_filter: 15),
+              class: "btn btn-sm #{'btn-primary' if @overdue_filter == '15'} #{'btn-outline-primary' if @overdue_filter != '15'}" %>
+          <%= link_to "30 Days", root_path(overdue_filter: 30),
+              class: "btn btn-sm #{'btn-primary' if @overdue_filter == '30'} #{'btn-outline-primary' if @overdue_filter != '30'}" %>
+          <%= link_to "90 Days", root_path(overdue_filter: 90),
+              class: "btn btn-sm #{'btn-primary' if @overdue_filter == '90'} #{'btn-outline-primary' if @overdue_filter != '90'}" %>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <% if @overdue_tickets.any? %>
+          <div class="list-group list-group-flush">
+            <% @overdue_tickets.each do |ticket| %>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <%= ticket.contact&.customer_name&.first&.upcase || 'U' %>
+                      </div>
+                    </div>
+                    <div>
+                      <h6 class="mb-1"><%= ticket.subject %></h6>
+                      <p class="mb-1 text-muted small">
+                        <%= ticket.contact&.email || 'No email' %> •
+                        <%= ticket.contact&.company&.name || 'No company' %>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <div class="text-muted small">
+                      <%= ticket.created_at.strftime("%b %d, %I:%M %p") %>
+                    </div>
+                    <span class="badge bg-<%= case ticket.status
+                                              when 'new' then 'primary'
+                                              when 'open' then 'info'
+                                              when 'pending' then 'warning'
+                                              else 'secondary'
+                                              end %>">
+                      <%= ticket.status.titleize %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="p-4 text-center text-muted">
+            <i class="fas fa-check-circle fa-3x mb-3 text-success"></i>
+            <h5>No Overdue Tickets</h5>
+            <p>Great job! All tickets are within the <%= @overdue_filter %>-day threshold.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Activity Widget -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Recent Activity</h5>
+      </div>
+      <div class="card-body p-0">
+        <% if @recent_tickets.any? %>
+          <div class="list-group list-group-flush">
+            <% @recent_tickets.each do |ticket| %>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1">
+                      <%= link_to ticket.subject, ticket_path(ticket), class: "text-decoration-none" %>
+                    </h6>
+                    <p class="mb-1 text-muted small">
+                      Created by <%= ticket.user&.name || 'Unknown' %> •
+                      <%= ticket.contact&.company&.name || 'No company' %>
+                    </p>
+                  </div>
+                  <div class="text-end">
+                    <div class="text-muted small">
+                      <%= time_ago_in_words(ticket.created_at) %> ago
+                    </div>
+                    <span class="badge bg-<%= case ticket.status
+                                              when 'new' then 'primary'
+                                              when 'open' then 'info'
+                                              when 'pending' then 'warning'
+                                              when 'resolved' then 'success'
+                                              else 'secondary'
+                                              end %>">
+                      <%= ticket.status.titleize %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="p-4 text-center text-muted">
+            <h5>No Recent Activity</h5>
+            <p>No tickets have been created yet.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

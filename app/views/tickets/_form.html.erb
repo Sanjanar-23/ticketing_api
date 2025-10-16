@@ -6,7 +6,8 @@
     </div>
     <div class="col-md-6">
       <%= f.label :user_id, class: 'form-label' %>
-      <%= f.number_field :user_id, class: 'form-control' %>
+      <%= f.hidden_field :user_id %>
+      <input type="text" class="form-control" value="<%= @ticket.user&.name || current_user&.name || 'Unknown' %>" readonly>
     </div>
     <div class="col-md-6">
       <%= f.label :subject, class: 'form-label' %>
@@ -31,6 +32,10 @@
     <div class="col-md-6">
       <%= f.label :status, class: 'form-label' %>
       <%= f.select :status, Ticket::STATUSES, {}, class: 'form-select' %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :priority, class: 'form-label' %>
+      <%= f.select :priority, Ticket::PRIORITIES, {}, class: 'form-select' %>
     </div>
   </div>
   <div class="mt-3">

@@ -1,7 +1,7 @@
 class TicketsController < WebControllerBase
   def index
     @q = params[:q].to_s.strip
-    scope = Ticket.includes(contact: :company).all
+    scope = Ticket.includes(:contact, :user).all
     if @q.present?
       like = "%#{@q}%"
       scope = scope.where(
@@ -14,15 +14,17 @@ class TicketsController < WebControllerBase
   end
 
   def show
-    @ticket = Ticket.find(params[:id])
+    @ticket = Ticket.includes(:ticket_emails, :contact, :user).find(params[:id])
   end
 
   def new
     @ticket = Ticket.new
+    @ticket.user_id = current_user.id if user_signed_in?
   end
 
   def create
     @ticket = Ticket.new(ticket_params)
+    @ticket.user_id = current_user.id if user_signed_in? && @ticket.user_id.blank?
     if @ticket.save
       redirect_to @ticket
     else
@@ -31,7 +33,7 @@ class TicketsController < WebControllerBase
   end
 
   def edit
-    @ticket = Ticket.find(params[:id])
+    @ticket = Ticket.includes(:user).find(params[:id])
   end
 
   def update
@@ -51,6 +53,6 @@ class TicketsController < WebControllerBase
   private
 
   def ticket_params
-    params.require(:ticket).permit(:contact_id, :user_id, :subject, :issue, :description, :note, :assigned_to, :status)
+    params.require(:ticket).permit(:contact_id, :user_id, :subject, :issue, :description, :note, :assigned_to, :status, :priority)
   end
 end

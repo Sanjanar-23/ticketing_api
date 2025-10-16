@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_13_061855) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_16_054555) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_13_061855) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "street"
+    t.string "state"
+    t.string "country"
+    t.string "city"
+    t.string "zip_code"
     t.index ["company_code"], name: "index_companies_on_company_code", unique: true
     t.index ["user_id"], name: "index_companies_on_user_id"
   end
@@ -51,6 +56,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_13_061855) do
     t.index ["jti"], name: "index_jwt_denylists_on_jti", unique: true
   end
 
+  create_table "ticket_emails", force: :cascade do |t|
+    t.bigint "ticket_id", null: false
+    t.string "from"
+    t.text "to"
+    t.text "cc"
+    t.string "subject"
+    t.text "body"
+    t.datetime "sent_at"
+    t.string "tags"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ticket_id"], name: "index_ticket_emails_on_ticket_id"
+  end
+
   create_table "tickets", force: :cascade do |t|
     t.string "company_code"
     t.string "company_name"
@@ -66,6 +85,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_13_061855) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "priority"
     t.index ["contact_id"], name: "index_tickets_on_contact_id"
     t.index ["user_id"], name: "index_tickets_on_user_id"
   end
@@ -87,6 +107,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_13_061855) do
   add_foreign_key "companies", "users"
   add_foreign_key "contacts", "companies"
   add_foreign_key "contacts", "users"
+  add_foreign_key "ticket_emails", "tickets"
   add_foreign_key "tickets", "contacts"
   add_foreign_key "tickets", "users"
 end

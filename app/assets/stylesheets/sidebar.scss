@@ -1,0 +1,301 @@
+// Sidebar Styles
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  transition: margin-left 0.3s ease;
+}
+
+// Sidebar Toggle Button
+.sidebar-toggle {
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 12px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  i {
+    font-size: 16px;
+  }
+}
+
+// Sidebar
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  z-index: 1000;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  overflow-y: auto;
+
+  &.active {
+    left: 0;
+  }
+}
+
+// Sidebar Header
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #334155;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 18px;
+
+    img {
+      height: 32px;
+      width: 32px;
+      border-radius: 6px;
+      background: #1e293b;
+    }
+  }
+
+  .sidebar-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #334155;
+      color: white;
+    }
+  }
+}
+
+// Sidebar Content
+.sidebar-content {
+  padding: 20px 0;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+
+  .sidebar-title {
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 20px 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #334155;
+  }
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin: 0;
+  }
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+
+  &:hover {
+    background: #334155;
+    color: white;
+    border-left-color: #3b82f6;
+  }
+
+  &.active {
+    background: #1e40af;
+    color: white;
+    border-left-color: #60a5fa;
+  }
+
+  i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+  }
+}
+
+// Sidebar Footer
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  border-top: 1px solid #334155;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+  }
+
+  .user-details {
+    flex: 1;
+
+    .user-name {
+      font-weight: 600;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .user-email {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  }
+}
+
+.auth-buttons {
+  .btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// Main Content
+.main-content {
+  transition: margin-left 0.3s ease;
+
+  &.sidebar-open {
+    margin-left: 300px;
+  }
+}
+
+// Navbar (existing styles)
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #0f172a;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.brand img {
+  height: 28px;
+  width: 28px;
+  border-radius: 4px;
+  background: #1e293b;
+}
+
+.navlinks a {
+  text-decoration: none;
+  margin-left: 16px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.navlinks a:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.container {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+
+  .main-content.sidebar-open {
+    margin-left: 0;
+  }
+
+  .sidebar-toggle {
+    top: 15px;
+    left: 15px;
+    padding: 10px;
+  }
+}
+
+// Overlay for mobile
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}

@@ -14,8 +14,10 @@
     <tr>
       <th>Subject</th>
       <th>Status</th>
+      <th>Priority</th>
       <th>Company</th>
       <th>Customer</th>
+      <th>Created By</th>
       <th></th>
     </tr>
   </thead>
@@ -24,8 +26,15 @@
       <tr>
         <td><%= link_to t.subject, t %></td>
         <td><span class="badge <%= t.status == 'resolved' || t.status == 'closed' ? 'text-bg-success' : 'text-bg-warning' %>"><%= t.status %></span></td>
+        <td><span class="badge <%= case t.priority
+                                    when 'high' then 'text-bg-danger'
+                                    when 'normal' then 'text-bg-warning'
+                                    when 'low' then 'text-bg-secondary'
+                                    else 'text-bg-secondary'
+                                    end %>"><%= t.priority %></span></td>
         <td><%= t.company_name %></td>
         <td><%= t.customer_name %></td>
+        <td><%= t.user&.name || 'Unknown' %></td>
         <td class="text-end">
           <%= link_to 'Edit', edit_ticket_path(t), class: 'btn btn-sm btn-outline-secondary' %>
         </td>

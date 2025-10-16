@@ -1,5 +1,5 @@
 class WebControllerBase < ActionController::Base
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   layout 'application'
 
   protected

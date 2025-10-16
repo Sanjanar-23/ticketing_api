@@ -1,31 +1,60 @@
-<div class="row justify-content-center">
-  <div class="col-md-6 col-lg-4">
-    <h1 class="h4 mb-3">Sign in</h1>
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="mb-3">
-        <%= f.label :email, class: 'form-label' %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
-      </div>
+<div class="auth-card">
+  <h1 class="auth-title">Welcome Back</h1>
+  <p class="auth-subtitle">Sign in to your account to continue</p>
 
-      <div class="mb-3">
-        <%= f.label :password, class: 'form-label' %>
-        <%= f.password_field :password, autocomplete: "current-password", class: 'form-control' %>
-      </div>
+  <% if alert %>
+    <div class="auth-error">
+      <i class="fas fa-exclamation-circle me-2"></i>
+      <%= alert %>
+    </div>
+  <% end %>
 
+  <% if notice %>
+    <div class="auth-notice">
+      <i class="fas fa-check-circle me-2"></i>
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+    <div class="auth-form-group">
+      <%= f.label :email, class: "auth-label" do %>
+        <i class="fas fa-envelope me-2"></i>Email Address
+      <% end %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "auth-input", placeholder: "Enter your email" %>
+    </div>
+
+    <div class="auth-form-group">
+      <%= f.label :password, class: "auth-label" do %>
+        <i class="fas fa-lock me-2"></i>Password
+      <% end %>
+      <%= f.password_field :password, autocomplete: "current-password", class: "auth-input", placeholder: "Enter your password" %>
+    </div>
+
+    <div class="auth-checkbox-group">
       <% if devise_mapping.rememberable? %>
-        <div class="mb-3 form-check">
-          <%= f.check_box :remember_me, class: 'form-check-input' %>
-          <%= f.label :remember_me, class: 'form-check-label' %>
+        <div class="auth-checkbox">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me, "Remember me" %>
         </div>
       <% end %>
 
-      <div class="d-grid gap-2">
-        <%= f.submit "Log in", class: 'btn btn-primary' %>
-      </div>
-    <% end %>
-
-    <div class="mt-3">
-      <%= render "devise/shared/links" %>
+      <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+        <%= link_to "Forgot password?", new_password_path(resource_name), class: "auth-forgot-link" %>
+      <% end %>
     </div>
+
+    <div class="auth-form-group">
+      <%= f.submit "Sign In", class: "auth-button" %>
+    </div>
+  <% end %>
+
+  <div class="auth-divider">
+    <span>or</span>
+  </div>
+
+  <div class="auth-link">
+    Don't have an account?
+    <%= link_to "Create Account", new_registration_path(resource_name) %>
   </div>
 </div>

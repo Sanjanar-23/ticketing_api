@@ -9,4 +9,4 @@ company = Company.create!(name: "Acme Corp", email: "info@acme.test", website: "
 
 contact = Contact.create!(customer_name: "Jane Customer", email: "jane@acme.test", phone: "+1-555-0101", company: company, user: user)
 
-Ticket.create!(contact: contact, user: user, subject: "Printer not working", issue: "hardware", description: "Stops printing after 3 pages")
+Ticket.create!(contact: contact, user: user, subject: "Printer not working", issue: "hardware", description: "Stops printing after 3 pages", priority: "normal")

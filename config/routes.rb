@@ -1,14 +1,20 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'sessions',
+    registrations: 'registrations',
+    passwords: 'passwords'
+  }
 
   # Silence favicon errors in dev
   get '/favicon.ico', to: proc { [204, {}, []] }
 
-  root to: 'companies#index'
+  root to: 'dashboard#index'
 
   resources :companies
   resources :contacts
-  resources :tickets
+  resources :tickets do
+    resources :ticket_emails, only: [:create, :show]
+  end
 
   namespace :api do
     namespace :v1 do
