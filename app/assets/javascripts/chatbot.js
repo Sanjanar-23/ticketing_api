@@ -115,7 +115,7 @@ class Chatbot {
     contentDiv.className = 'message-content';
 
     if (type === 'bot') {
-      contentDiv.innerHTML = `<i class="fas fa-robot me-2"></i>${this.formatMessage(message)}`;
+      contentDiv.innerHTML = `<i class="fas fa-robot me-1"></i>${this.formatMessage(message)}`;
     } else {
       contentDiv.textContent = message;
     }
