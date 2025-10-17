@@ -1,7 +1,35 @@
 <%= form_with model: @contact, html: { class: 'card p-3' } do |f| %>
+  <!-- Action Dropdown - Top Right -->
+  <div class="d-flex justify-content-end mb-3">
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-ellipsis-v"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <button type="button" class="dropdown-item" onclick="document.getElementById('submit-btn').click();" style="border: none; background: none; width: 100%; text-align: left;">
+            <i class="fas fa-save me-2"></i>Save Contact
+          </button>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <% if @company.present? %>
+            <%= link_to 'Cancel', company_path(@company), class: 'dropdown-item' %>
+          <% else %>
+            <%= link_to 'Cancel', contacts_path, class: 'dropdown-item' %>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <div class="row g-3">
     <!-- Hidden company_id field -->
     <%= f.hidden_field :company_id %>
+    <!-- Hidden company_id for redirect logic -->
+    <% if params[:company_id].present? %>
+      <%= hidden_field_tag :company_id, params[:company_id] %>
+    <% end %>
 
     <!-- Show company name if coming from company context -->
     <% if @company.present? %>
@@ -39,12 +67,7 @@
     <% end %>
   </div>
 
-  <div class="mt-3 d-flex justify-content-between">
-    <%= f.submit 'Save Contact', class: 'btn btn-primary' %>
-    <% if @company.present? %>
-      <%= link_to 'Cancel', company_path(@company), class: 'btn btn-secondary' %>
-    <% else %>
-      <%= link_to 'Cancel', contacts_path, class: 'btn btn-secondary' %>
-    <% end %>
-  </div>
+  <!-- Hidden submit button for dropdown action -->
+  <%= f.submit 'Save Contact', id: 'submit-btn', style: 'display: none;' %>
+
 <% end %>

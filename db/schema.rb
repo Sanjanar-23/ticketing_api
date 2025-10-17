@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_16_054555) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_17_070540) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "chatbots", force: :cascade do |t|
+    t.text "message", null: false
+    t.text "response"
+    t.integer "user_id"
+    t.integer "ticket_id"
+    t.string "session_id", null: false
+    t.string "message_type", default: "user"
+    t.boolean "is_helpful"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_chatbots_on_session_id"
+    t.index ["ticket_id"], name: "index_chatbots_on_ticket_id"
+    t.index ["user_id"], name: "index_chatbots_on_user_id"
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string "company_code", null: false

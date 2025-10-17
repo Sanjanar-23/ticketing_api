@@ -1,4 +1,4 @@
-class Api::V1::ContactsController < ApplicationController
+class Api::V1::ContactsController < ApiController
   before_action :set_contact, only: [:show, :update, :destroy]
 
   def index

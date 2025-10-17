@@ -15,6 +15,14 @@ Rails.application.routes.draw do
   resources :tickets do
     resources :ticket_emails, only: [:create, :show]
   end
+  resources :chatbots, only: [:index, :create] do
+    collection do
+      get :chat_history
+    end
+    member do
+      patch :feedback
+    end
+  end
 
   namespace :api do
     namespace :v1 do

@@ -1,4 +1,24 @@
 <%= form_with model: @company, html: { class: 'card p-3' } do |f| %>
+  <!-- Action Dropdown - Top Right -->
+  <div class="d-flex justify-content-end mb-3">
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-ellipsis-v"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <button type="button" class="dropdown-item" onclick="document.getElementById('submit-btn').click();" style="border: none; background: none; width: 100%; text-align: left;">
+            <i class="fas fa-save me-2"></i>Save Company
+          </button>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <%= link_to 'Cancel', companies_path, class: 'dropdown-item' %>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <!-- Company Information Section -->
   <div class="mb-4">
     <h5 class="mb-3 text-dark">Company Information</h5>
@@ -53,7 +73,7 @@
     </div>
   </div>
 
-  <div class="mt-4">
-    <%= f.submit 'Save Company', class: 'btn btn-primary' %>
-  </div>
+  <!-- Hidden submit button for dropdown action -->
+  <%= f.submit 'Save Company', id: 'submit-btn', style: 'display: none;' %>
+
 <% end %>

@@ -1,4 +1,4 @@
-class Api::V1::TicketsController < ApplicationController
+class Api::V1::TicketsController < ApiController
   before_action :set_ticket, only: [:show, :update, :destroy]
 
   def index

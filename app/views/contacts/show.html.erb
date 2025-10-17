@@ -1,8 +1,12 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h1 class="h3 m-0"><%= @contact.customer_name %></h1>
   <div>
-    <%= link_to 'Edit', edit_contact_path(@contact), class: 'btn btn-outline-secondary' %>
-    <%= link_to 'Back', contacts_path, class: 'btn btn-link' %>
+    <%= link_to 'Edit', edit_contact_path(@contact, company_id: params[:company_id]), class: 'btn btn-outline-secondary' %>
+    <% if params[:company_id].present? %>
+      <%= link_to 'Back', company_path(params[:company_id]), class: 'btn btn-link' %>
+    <% else %>
+      <%= link_to 'Back', contacts_path, class: 'btn btn-link' %>
+    <% end %>
   </div>
 </div>
 

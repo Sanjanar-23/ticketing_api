@@ -9,6 +9,10 @@ class Contact < ApplicationRecord
 
   before_validation :copy_company_details
 
+  def display_name_with_company
+    "#{customer_name} (#{company_name})"
+  end
+
   private
 
   def copy_company_details

@@ -1,6 +1,18 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h3 m-0">Contacts</h1>
-  <%= link_to 'New Contact', new_contact_path, class: 'btn btn-primary' %>
+  <div>
+    <h1 class="h3 m-0">Contacts</h1>
+    <% if @company.present? %>
+      <p class="text-muted mb-0">Contacts for <strong><%= @company.name %></strong></p>
+    <% end %>
+  </div>
+  <div>
+    <% if @company.present? %>
+      <%= link_to 'New Contact', new_contact_path(company_id: @company.id), class: 'btn btn-primary me-2' %>
+      <%= link_to 'Back to Company', company_path(@company), class: 'btn btn-outline-secondary' %>
+    <% else %>
+      <%= link_to 'New Contact', new_contact_path, class: 'btn btn-primary' %>
+    <% end %>
+  </div>
 </div>
 
 <table class="table table-striped table-hover">

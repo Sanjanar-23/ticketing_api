@@ -4,8 +4,12 @@
     <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#sendMailModal">
       <i class="fas fa-envelope"></i> Send Mail
     </button>
-    <%= link_to 'Edit', edit_ticket_path(@ticket), class: 'btn btn-outline-secondary me-2' %>
-    <%= link_to 'Back', tickets_path, class: 'btn btn-link' %>
+    <%= link_to 'Edit', edit_ticket_path(@ticket, company_id: params[:company_id]), class: 'btn btn-outline-secondary me-2' %>
+    <% if params[:company_id].present? %>
+      <%= link_to 'Back', company_path(params[:company_id]), class: 'btn btn-link' %>
+    <% else %>
+      <%= link_to 'Back', tickets_path, class: 'btn btn-link' %>
+    <% end %>
   </div>
 </div>
 

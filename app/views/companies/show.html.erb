@@ -5,7 +5,7 @@
   <h1 class="h3 m-0 text-dark">Company Details</h1>
   <div>
     <%= link_to 'Create Contact', new_contact_path(company_id: @company.id), class: 'btn btn-success me-2' %>
-    <%= link_to 'Create Ticket', new_ticket_path, class: 'btn btn-warning me-2' %>
+    <%= link_to 'Create Ticket', new_ticket_path(company_id: @company.id), class: 'btn btn-warning me-2' %>
     <%= link_to 'Edit', edit_company_path(@company), class: 'btn btn-outline-secondary me-2' %>
     <%= link_to 'Back', companies_path, class: 'btn btn-link' %>
   </div>
@@ -175,7 +175,10 @@
     <div class="card mb-3">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">Contacts</h5>
-        <span class="badge bg-primary"><%= @company.contacts.count %></span>
+        <div>
+          <span class="badge bg-primary me-2"><%= @company.contacts.count %></span>
+          <%= link_to 'View All', contacts_path(company_id: @company.id), class: 'btn btn-sm btn-outline-primary' %>
+        </div>
       </div>
       <div class="card-body p-0">
         <% if @company.contacts.any? %>
@@ -184,7 +187,7 @@
               <div class="list-group-item">
                 <div class="d-flex w-100 justify-content-between">
                   <h6 class="mb-1"><%= contact.customer_name %></h6>
-                  <small><%= link_to 'View', contact_path(contact), class: 'text-decoration-none' %></small>
+                  <small><%= link_to 'View', contact_path(contact, company_id: @company.id), class: 'text-decoration-none' %></small>
                 </div>
                 <p class="mb-1 text-muted"><%= contact.email %></p>
                 <% if contact.phone.present? %>
@@ -215,7 +218,7 @@
               <div class="list-group-item">
                 <div class="d-flex w-100 justify-content-between">
                   <h6 class="mb-1">
-                    <%= link_to ticket.issue, ticket_path(ticket), class: 'text-decoration-none' %>
+                    <%= link_to ticket.issue, ticket_path(ticket, company_id: @company.id), class: 'text-decoration-none' %>
                   </h6>
                   <small>
                     <span class="badge <%= case ticket.status
@@ -239,7 +242,6 @@
         <% else %>
           <div class="p-3 text-center text-muted">
             <p class="mb-2">No tickets yet</p>
-            <%= link_to 'Create First Ticket', new_ticket_path, class: 'btn btn-sm btn-outline-warning' %>
           </div>
         <% end %>
       </div>

@@ -1,6 +1,11 @@
 class ContactsController < WebControllerBase
   def index
-    @contacts = Contact.includes(:company, :user).all
+    if params[:company_id].present?
+      @company = Company.find(params[:company_id])
+      @contacts = Contact.includes(:company, :user).where(company_id: @company.id)
+    else
+      @contacts = Contact.includes(:company, :user).all
+    end
   end
 
   def show
@@ -42,7 +47,12 @@ class ContactsController < WebControllerBase
   def update
     @contact = Contact.find(params[:id])
     if @contact.update(contact_params)
-      redirect_to @contact
+      # Redirect back to company page if edited from company context
+      if params[:contact][:company_id].present?
+        redirect_to company_path(params[:contact][:company_id]), notice: 'Contact was successfully updated.'
+      else
+        redirect_to @contact, notice: 'Contact was successfully updated.'
+      end
     else
       render :edit, status: :unprocessable_entity
     end
