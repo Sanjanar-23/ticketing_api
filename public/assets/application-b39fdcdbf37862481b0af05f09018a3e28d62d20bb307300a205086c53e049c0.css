@@ -1,0 +1,9 @@
+/* line 5, app/assets/stylesheets/application.scss */
+.navbar {
+  background: #0f172a;
+}
+
+/* line 6, app/assets/stylesheets/application.scss */
+.navlinks a {
+  color: #e2e8f0;
+}

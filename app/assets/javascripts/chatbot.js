@@ -1,235 +1,107 @@
-class Chatbot {
-  constructor() {
-    this.sessionId = this.generateSessionId();
-    this.isOpen = false;
-    this.isTyping = false;
+// Chatbot functionality
+let isChatbotOpen = false;
 
-    this.initializeElements();
-    this.bindEvents();
-    this.loadChatHistory();
-  }
+function toggleChatbot() {
+  const panel = document.getElementById('chatbotPanel');
+  isChatbotOpen = !isChatbotOpen;
 
-  initializeElements() {
-    this.widget = document.getElementById('chatbot-widget');
-    this.toggle = document.getElementById('chatbot-toggle');
-    this.panel = document.getElementById('chatbot-panel');
-    this.closeBtn = document.getElementById('chatbot-close');
-    this.messagesContainer = document.getElementById('chatbot-messages');
-    this.inputField = document.getElementById('chatbot-input-field');
-    this.sendBtn = document.getElementById('chatbot-send');
-  }
-
-  bindEvents() {
-    this.toggle.addEventListener('click', () => this.togglePanel());
-    this.closeBtn.addEventListener('click', () => this.closePanel());
-    this.sendBtn.addEventListener('click', () => this.sendMessage());
-    this.inputField.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        this.sendMessage();
-      }
-    });
-
-    // Close panel when clicking outside
-    document.addEventListener('click', (e) => {
-      if (this.isOpen && !this.widget.contains(e.target)) {
-        this.closePanel();
-      }
-    });
-  }
-
-  generateSessionId() {
-    return 'chatbot_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-  }
-
-  togglePanel() {
-    if (this.isOpen) {
-      this.closePanel();
-    } else {
-      this.openPanel();
-    }
-  }
-
-  openPanel() {
-    this.panel.classList.add('active');
-    this.isOpen = true;
-    this.inputField.focus();
-    this.scrollToBottom();
-  }
-
-  closePanel() {
-    this.panel.classList.remove('active');
-    this.isOpen = false;
-  }
-
-  async sendMessage() {
-    const message = this.inputField.value.trim();
-    if (!message || this.isTyping) return;
-
-    // Add user message to UI
-    this.addMessage(message, 'user');
-    this.inputField.value = '';
-
-    // Show typing indicator
-    this.showTypingIndicator();
-
-    try {
-      const response = await fetch('/chatbots', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-          chatbot: {
-            message: message,
-            session_id: this.sessionId
-          }
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Remove typing indicator
-        this.hideTypingIndicator();
-
-        // Add bot response to UI
-        this.addMessage(data.bot_response.message, 'bot', data.bot_response.id);
-      } else {
-        this.hideTypingIndicator();
-        this.addMessage('Sorry, I encountered an error. Please try again.', 'bot');
-      }
-    } catch (error) {
-      console.error('Chatbot error:', error);
-      this.hideTypingIndicator();
-      this.addMessage('Sorry, I\'m having trouble connecting. Please try again later.', 'bot');
-    }
-  }
-
-  addMessage(message, type, messageId = null) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `chatbot-message ${type}-message`;
-
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
-
-    if (type === 'bot') {
-      contentDiv.innerHTML = `<i class="fas fa-robot me-1"></i>${this.formatMessage(message)}`;
-    } else {
-      contentDiv.textContent = message;
-    }
-
-    const timeDiv = document.createElement('div');
-    timeDiv.className = 'message-time';
-    timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    messageDiv.appendChild(contentDiv);
-    messageDiv.appendChild(timeDiv);
-
-    // Add feedback buttons for bot messages
-    if (type === 'bot' && messageId) {
-      const feedbackDiv = document.createElement('div');
-      feedbackDiv.className = 'message-feedback';
-      feedbackDiv.innerHTML = `
-        <button class="feedback-btn" onclick="chatbot.giveFeedback(${messageId}, true)">
-          <i class="fas fa-thumbs-up"></i> Helpful
-        </button>
-        <button class="feedback-btn" onclick="chatbot.giveFeedback(${messageId}, false)">
-          <i class="fas fa-thumbs-down"></i> Not helpful
-        </button>
-      `;
-      messageDiv.appendChild(feedbackDiv);
-    }
-
-    this.messagesContainer.appendChild(messageDiv);
-    this.scrollToBottom();
-  }
-
-  formatMessage(message) {
-    // Convert line breaks to HTML
-    return message.replace(/\n/g, '<br>');
-  }
-
-  showTypingIndicator() {
-    this.isTyping = true;
-    const typingDiv = document.createElement('div');
-    typingDiv.className = 'chatbot-message bot-message typing-indicator';
-    typingDiv.id = 'typing-indicator';
-    typingDiv.innerHTML = `
-      <div class="typing-indicator">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    `;
-    this.messagesContainer.appendChild(typingDiv);
-    this.scrollToBottom();
-  }
-
-  hideTypingIndicator() {
-    this.isTyping = false;
-    const typingIndicator = document.getElementById('typing-indicator');
-    if (typingIndicator) {
-      typingIndicator.remove();
-    }
-  }
-
-  async giveFeedback(messageId, isHelpful) {
-    try {
-      await fetch(`/chatbots/${messageId}/feedback`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-          is_helpful: isHelpful
-        })
-      });
-
-      // Update feedback button appearance
-      const feedbackBtns = document.querySelectorAll(`[onclick*="${messageId}"]`);
-      feedbackBtns.forEach(btn => {
-        btn.classList.remove('helpful', 'not-helpful');
-        if (btn.textContent.includes('Helpful') && isHelpful) {
-          btn.classList.add('helpful');
-        } else if (btn.textContent.includes('Not helpful') && !isHelpful) {
-          btn.classList.add('not-helpful');
-        }
-      });
-    } catch (error) {
-      console.error('Feedback error:', error);
-    }
-  }
-
-  async loadChatHistory() {
-    try {
-      const response = await fetch(`/chatbots/chat_history?session_id=${this.sessionId}`);
-      const data = await response.json();
-
-      if (data.success && data.messages.length > 0) {
-        // Clear the default welcome message
-        this.messagesContainer.innerHTML = '';
-
-        // Load chat history
-        data.messages.forEach(msg => {
-          this.addMessage(msg.message, msg.message_type, msg.id);
-        });
-      }
-    } catch (error) {
-      console.error('Load chat history error:', error);
-    }
-  }
-
-  scrollToBottom() {
-    setTimeout(() => {
-      this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
-    }, 100);
+  if (isChatbotOpen) {
+    panel.classList.add('show');
+    document.getElementById('chatbotInput').focus();
+  } else {
+    panel.classList.remove('show');
   }
 }
 
-// Initialize chatbot when DOM is loaded
+function sendMessage() {
+  const input = document.getElementById('chatbotInput');
+  const message = input.value.trim();
+
+  if (message === '') return;
+
+  // Add user message
+  addMessage(message, 'user');
+  input.value = '';
+
+  // Simulate bot response
+  setTimeout(() => {
+    const botResponse = getBotResponse(message);
+    addMessage(botResponse, 'bot');
+  }, 1000);
+}
+
+function addMessage(content, type) {
+  const messagesContainer = document.getElementById('chatbotMessages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `chatbot-message ${type}-message`;
+
+  const contentDiv = document.createElement('div');
+  contentDiv.className = 'message-content';
+
+  if (type === 'bot') {
+    contentDiv.innerHTML = `<i class="bi bi-bluesky me-1"></i>${content}`;
+  } else {
+    contentDiv.textContent = content;
+  }
+
+  messageDiv.appendChild(contentDiv);
+  messagesContainer.appendChild(messageDiv);
+
+  // Scroll to bottom
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function getBotResponse(userMessage) {
+  const message = userMessage.toLowerCase();
+
+  // Simple response logic
+  if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+    return "Hello! I'm here to help you with your ticketing system. How can I assist you today?";
+  } else if (message.includes('ticket') || message.includes('create')) {
+    return "To create a new ticket, go to the Tickets section and click 'New Ticket'. You'll need to provide the subject, description, and select a contact.";
+  } else if (message.includes('company') || message.includes('companies')) {
+    return "You can manage companies in the Companies section. From there you can view, edit, or create new companies and their contacts.";
+  } else if (message.includes('contact') || message.includes('contacts')) {
+    return "Contacts are managed in the Contacts section. Each contact belongs to a company and can have multiple tickets.";
+  } else if (message.includes('status') || message.includes('priority')) {
+    return "Tickets have different statuses (New, Open, Pending, Resolved, Closed) and priorities (Low, Normal, High). You can update these in the ticket details.";
+  } else if (message.includes('help') || message.includes('support')) {
+    return "I can help you with: creating tickets, managing companies and contacts, understanding ticket statuses, and navigating the system. What would you like to know?";
+  } else if (message.includes('dashboard') || message.includes('overview')) {
+    return "The dashboard shows you an overview of all tickets, their statuses, priorities, and recent activity. It's your main control center!";
+  } else if (message.includes('email') || message.includes('mail')) {
+    return "You can send emails directly from ticket pages using the 'Send Mail' button. This helps you communicate with customers about their tickets.";
+  } else {
+    return "I'm here to help! You can ask me about tickets, companies, contacts, or how to use the system. What would you like to know?";
+  }
+}
+
+// Event listeners
 document.addEventListener('DOMContentLoaded', function() {
-  window.chatbot = new Chatbot();
+  const input = document.getElementById('chatbotInput');
+  const sendButton = document.querySelector('.chatbot-input button');
+
+  if (input) {
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  }
+
+  if (sendButton) {
+    sendButton.addEventListener('click', sendMessage);
+  }
+
+  // Close chatbot when clicking outside
+  document.addEventListener('click', function(e) {
+    const chatbotWidget = document.querySelector('.chatbot-widget');
+    const chatbotPanel = document.getElementById('chatbotPanel');
+
+    if (isChatbotOpen &&
+        !chatbotWidget.contains(e.target) &&
+        chatbotPanel.classList.contains('show')) {
+      toggleChatbot();
+    }
+  });
 });

@@ -6,7 +6,6 @@ class User < ApplicationRecord
   has_many :companies, dependent: :destroy
   has_many :contacts, dependent: :destroy
   has_many :tickets, dependent: :destroy
-  has_many :chatbots, dependent: :destroy
 
   validates :name, presence: true
 end

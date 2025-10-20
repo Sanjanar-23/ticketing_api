@@ -2,7 +2,6 @@ class Ticket < ApplicationRecord
   belongs_to :contact
   belongs_to :user
   has_many :ticket_emails, dependent: :destroy
-  has_many :chatbots, dependent: :destroy
 
   STATUSES = %w[new open pending resolved closed].freeze
   PRIORITIES = %w[low normal high].freeze

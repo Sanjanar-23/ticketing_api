@@ -1,0 +1,329 @@
+/* line 2, app/assets/stylesheets/sidebar.scss */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  transition: margin-left 0.3s ease;
+}
+
+/* line 10, app/assets/stylesheets/sidebar.scss */
+.sidebar-toggle {
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 12px;
+}
+
+/* line 20, app/assets/stylesheets/sidebar.scss */
+.sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* line 24, app/assets/stylesheets/sidebar.scss */
+.sidebar-toggle i {
+  font-size: 16px;
+}
+
+/* line 30, app/assets/stylesheets/sidebar.scss */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  z-index: 1000;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+/* line 43, app/assets/stylesheets/sidebar.scss */
+.sidebar.active {
+  left: 0;
+}
+
+/* line 49, app/assets/stylesheets/sidebar.scss */
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #334155;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* line 56, app/assets/stylesheets/sidebar.scss */
+.sidebar-header .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* line 63, app/assets/stylesheets/sidebar.scss */
+.sidebar-header .brand img {
+  height: 32px;
+  width: 32px;
+  border-radius: 6px;
+  background: #1e293b;
+}
+
+/* line 71, app/assets/stylesheets/sidebar.scss */
+.sidebar-header .sidebar-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+/* line 81, app/assets/stylesheets/sidebar.scss */
+.sidebar-header .sidebar-close:hover {
+  background: #334155;
+  color: white;
+}
+
+/* line 89, app/assets/stylesheets/sidebar.scss */
+.sidebar-content {
+  padding: 20px 0;
+}
+
+/* line 93, app/assets/stylesheets/sidebar.scss */
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+/* line 96, app/assets/stylesheets/sidebar.scss */
+.sidebar-section .sidebar-title {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 20px 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #334155;
+}
+
+/* line 108, app/assets/stylesheets/sidebar.scss */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 113, app/assets/stylesheets/sidebar.scss */
+.sidebar-menu li {
+  margin: 0;
+}
+
+/* line 118, app/assets/stylesheets/sidebar.scss */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+/* line 128, app/assets/stylesheets/sidebar.scss */
+.sidebar-link:hover {
+  background: #334155;
+  color: white;
+  border-left-color: #3b82f6;
+}
+
+/* line 134, app/assets/stylesheets/sidebar.scss */
+.sidebar-link.active {
+  background: #1e40af;
+  color: white;
+  border-left-color: #60a5fa;
+}
+
+/* line 140, app/assets/stylesheets/sidebar.scss */
+.sidebar-link i {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+/* line 148, app/assets/stylesheets/sidebar.scss */
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  border-top: 1px solid #334155;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+/* line 159, app/assets/stylesheets/sidebar.scss */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+/* line 165, app/assets/stylesheets/sidebar.scss */
+.user-info .user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+}
+
+/* line 178, app/assets/stylesheets/sidebar.scss */
+.user-info .user-details {
+  flex: 1;
+}
+
+/* line 181, app/assets/stylesheets/sidebar.scss */
+.user-info .user-details .user-name {
+  font-weight: 600;
+  color: white;
+  margin-bottom: 2px;
+}
+
+/* line 187, app/assets/stylesheets/sidebar.scss */
+.user-info .user-details .user-email {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* line 195, app/assets/stylesheets/sidebar.scss */
+.auth-buttons .btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* line 200, app/assets/stylesheets/sidebar.scss */
+.auth-buttons .btn:hover {
+  transform: translateY(-1px);
+}
+
+/* line 207, app/assets/stylesheets/sidebar.scss */
+.main-content {
+  transition: margin-left 0.3s ease;
+}
+
+/* line 210, app/assets/stylesheets/sidebar.scss */
+.main-content.sidebar-open {
+  margin-left: 300px;
+}
+
+/* line 216, app/assets/stylesheets/sidebar.scss */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #0f172a;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* line 229, app/assets/stylesheets/sidebar.scss */
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+/* line 234, app/assets/stylesheets/sidebar.scss */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+/* line 241, app/assets/stylesheets/sidebar.scss */
+.brand img {
+  height: 28px;
+  width: 28px;
+  border-radius: 4px;
+  background: #1e293b;
+}
+
+/* line 248, app/assets/stylesheets/sidebar.scss */
+.navlinks a {
+  text-decoration: none;
+  margin-left: 16px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+/* line 255, app/assets/stylesheets/sidebar.scss */
+.navlinks a:hover {
+  background: #334155;
+  color: #fff;
+}
+
+/* line 260, app/assets/stylesheets/sidebar.scss */
+.container {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+@media (max-width: 768px) {
+  /* line 268, app/assets/stylesheets/sidebar.scss */
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+  /* line 273, app/assets/stylesheets/sidebar.scss */
+  .main-content.sidebar-open {
+    margin-left: 0;
+  }
+  /* line 277, app/assets/stylesheets/sidebar.scss */
+  .sidebar-toggle {
+    top: 15px;
+    left: 15px;
+    padding: 10px;
+  }
+}
+
+/* line 285, app/assets/stylesheets/sidebar.scss */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+/* line 297, app/assets/stylesheets/sidebar.scss */
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
